@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { PrismaService } from 'src/modules/database/database.service';
@@ -12,9 +12,26 @@ export class StudentService {
 
   async create(createStudentDto: CreateStudentDto): Promise<any> {
 
-    
+    let {
+      email
+    } = createStudentDto;
 
-    return 'This action adds a new student';
+
+    let verifyEmail = await this.findOneByEmail(email);
+
+    if(verifyEmail) {
+      throw new HttpException("Email is alredy in use, plase use another one !", 300);
+      return
+    }
+
+    let createStudent = await this.prismaService.student.create({
+      data: {
+        id: uuid(),
+        ...createStudentDto
+      }
+    })
+
+    return createStudent
   }
 
   async findAll(): Promise<any> {
@@ -22,19 +39,24 @@ export class StudentService {
     return allStudents;
   }
 
-  async findOne(id: string):Promise<any> {
-    
+  async findOneById(id: string):Promise<any> {
     let findStudent = await this.prismaService.student.findFirst({
       where: {
         id
       }
     });
 
-    if(findStudent) {
-      return findStudent
-    } else {
-      return false
-    }
+    return findStudent;
+  }
+
+  async findOneByEmail(email: string): Promise<any> {
+    let findStudent = await this.prismaService.student.findFirst({
+      where: {
+        email
+      }
+    })
+
+    return findStudent;
   }
 
   update(id: number, updateStudentDto: UpdateStudentDto) {

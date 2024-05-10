@@ -5,9 +5,9 @@ import { IsOptional, IsString } from 'class-validator';
 export class UpdateStudentDto extends PartialType(CreateStudentDto) {
     @IsString()
     @IsOptional()
-    firstName: String;
+    firstName: string;
 
     @IsString()
     @IsOptional()
-    lastName: String;
+    lastName: string;
 }
