@@ -3,6 +3,7 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { PrismaService } from 'src/modules/database/database.service';
 
+import * as bcrypt from 'bcrypt';
 import { v4 as uuid} from 'uuid';
 
 @Injectable()
@@ -13,9 +14,9 @@ export class StudentService {
   async create(createStudentDto: CreateStudentDto): Promise<any> {
 
     let {
-      email
+      email,
+      password
     } = createStudentDto;
-
 
     let verifyEmail = await this.findOneByEmail(email);
 
@@ -24,10 +25,13 @@ export class StudentService {
       return
     }
 
+    let passwordHash = await bcrypt.hash(password, 10);
+
     let createStudent = await this.prismaService.student.create({
       data: {
         id: uuid(),
-        ...createStudentDto
+        ...createStudentDto,
+        password: passwordHash        
       }
     })
 
@@ -42,7 +46,8 @@ export class StudentService {
   async findOneById(id: string):Promise<any> {
     let findStudent = await this.prismaService.student.findFirst({
       where: {
-        id
+        id,
+        isActive: true
       }
     });
 
@@ -52,18 +57,38 @@ export class StudentService {
   async findOneByEmail(email: string): Promise<any> {
     let findStudent = await this.prismaService.student.findFirst({
       where: {
-        email
+        email,
+        isActive: true
       }
     })
 
     return findStudent;
   }
 
-  update(id: number, updateStudentDto: UpdateStudentDto) {
-    return `This action updates a #${id} student`;
-  }
+  async update(id: string, updateStudentDto: UpdateStudentDto): Promise<any> {
 
-  remove(id: number) {
-    return `This action removes a #${id} student`;
+    let updateStudent = await this.prismaService.student.update({
+      where: {
+        id,
+        isActive: true
+      },
+      data: {
+        ...updateStudentDto
+      }
+    })
+
+    return updateStudent
+  }
+  async remove(id: string) {
+    let updateAccount = await this.prismaService.student.update({
+      where: {
+        id
+      },
+      data: {
+        isActive: false
+      }
+    })
+
+    return;
   }
 }

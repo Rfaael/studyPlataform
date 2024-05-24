@@ -23,6 +23,8 @@ model Student {
   email String 
   password String 
 
+  isActive Boolean @default(true)
+
   updated_at DateTime @updatedAt
   created_at DateTime @default(now())
 }
