@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
+// student model 
 model Student {
   id String @unique
 
@@ -24,6 +24,57 @@ model Student {
   password String 
 
   // isActive Boolean @default(true)
+
+  updated_at DateTime @updatedAt
+  created_at DateTime @default(now())
+}
+
+
+model Tasks {
+  id String @unique
+
+  updated_at DateTime @updatedAt
+  created_at DateTime @default(now())
+}
+
+// ????
+model Agenda {
+  id String @unique
+
+  updated_at DateTime @updatedAt
+  created_at DateTime @default(now())
+}
+
+model Goals {
+  id String @unique
+
+  updated_at DateTime @updatedAt
+  created_at DateTime @default(now())
+}
+
+model Subjects {
+  id String @unique
+
+  updated_at DateTime @updatedAt
+  created_at DateTime @default(now())
+}
+
+model SubjectsCategory {
+  id String @unique
+
+  updated_at DateTime @updatedAt
+  created_at DateTime @default(now())
+}
+
+model Books {
+  id String @unique
+
+  updated_at DateTime @updatedAt
+  created_at DateTime @default(now())
+}
+
+model FlashCards {
+  id String @unique
 
   updated_at DateTime @updatedAt
   created_at DateTime @default(now())

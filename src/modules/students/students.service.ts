@@ -1,7 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { PrismaService } from 'src/modules/database/database.service';
+import { PrismaService } from 'src/database/database.service';
 
 import * as bcrypt from 'bcrypt';
 import { v4 as uuid} from 'uuid';
@@ -76,7 +76,7 @@ export class StudentService {
 
     return updateStudent
   }
-  // async remove(id: string) {
+  async remove(id: string) {
   //   let updateAccount = await this.prismaService.student.update({
   //     where: {
   //       id
@@ -87,5 +87,5 @@ export class StudentService {
   //   })
 
   //   return;
-  // }
+  }
 }
