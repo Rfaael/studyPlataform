@@ -46,8 +46,7 @@ export class StudentService {
   async findOneById(id: string):Promise<any> {
     let findStudent = await this.prismaService.student.findFirst({
       where: {
-        id,
-        isActive: true
+        id
       }
     });
 
@@ -57,8 +56,7 @@ export class StudentService {
   async findOneByEmail(email: string): Promise<any> {
     let findStudent = await this.prismaService.student.findFirst({
       where: {
-        email,
-        isActive: true
+        email
       }
     })
 
@@ -69,8 +67,7 @@ export class StudentService {
 
     let updateStudent = await this.prismaService.student.update({
       where: {
-        id,
-        isActive: true
+        id
       },
       data: {
         ...updateStudentDto
@@ -79,16 +76,16 @@ export class StudentService {
 
     return updateStudent
   }
-  async remove(id: string) {
-    let updateAccount = await this.prismaService.student.update({
-      where: {
-        id
-      },
-      data: {
-        isActive: false
-      }
-    })
+  // async remove(id: string) {
+  //   let updateAccount = await this.prismaService.student.update({
+  //     where: {
+  //       id
+  //     },
+  //     data: {
+  //       isActive: false
+  //     }
+  //   })
 
-    return;
-  }
+  //   return;
+  // }
 }
